@@ -1,0 +1,98 @@
+﻿@model NetwrixCoffee.ViewModels.CoffeeMachineIndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <form method="post" data-ajax="true" data-ajax-method="post" data-ajax-url="/Home/FlipMachineSwitch" data-ajax-failure="exceptions" data-ajax-success="success">
+        @if (Model.CoffeeStatus.IsOn)
+        {
+            <div>Its on</div>
+            <button>Turn Off</button>
+        }
+        else
+        {
+            <div>Its off</div>
+            <button>Turn On</button>
+        }
+    </form>
+
+    @if (Model.CoffeeStatus.IsOn)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">@Html.LabelFor(m => m.CoffeeStatus.WaterLevelState)</th>
+                    <th scope="col">@Html.LabelFor(m => m.CoffeeStatus.BeanFeedState)</th>
+                    <th scope="col">@Html.LabelFor(m => m.CoffeeStatus.WasteCoffeeState)</th>
+                    <th scope="col">@Html.LabelFor(m => m.CoffeeStatus.WaterTrayState)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(m => m.CoffeeStatus.WaterLevelState)</td>
+                    <td>@Html.DisplayFor(m => m.CoffeeStatus.BeanFeedState)</td>
+                    <td>@Html.DisplayFor(m => m.CoffeeStatus.WasteCoffeeState)</td>
+                    <td>@Html.DisplayFor(m => m.CoffeeStatus.WaterTrayState)</td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="CoffeeActions">
+            @if (Model.CoffeeStatus.IsMakingCoffee)
+            {
+                @Html.Partial("_MakingCoffee")
+            }
+            else if (Model.CoffeeStatus.AlertState)
+            {
+                <div>Coffee Machine Alert State</div>
+            }
+            else
+            {
+                <form method="post"
+                      data-ajax="true"
+                      data-ajax-method="post"
+                      data-ajax-url="/Home/MakeCoffee"
+                      data-ajax-failure="exceptions"
+                      data-ajax-success="success"
+                      data-ajax-begin="SetCoffeeActionsToMaking">
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.CoffeeCreationOptions.NumEspressoShots)
+                        @Html.EditorFor(m => m.CoffeeCreationOptions.NumEspressoShots, new { htmlAttributes = new {@required = "required", @min = 1 } })
+                        @Html.ValidationMessageFor(m => m.CoffeeCreationOptions.NumEspressoShots)
+                    </div>
+                    <div class="col-3">
+                        @Html.LabelFor(m => m.CoffeeCreationOptions.AddMilk)
+                        @Html.EditorFor(m => m.CoffeeCreationOptions.AddMilk)
+                        @Html.ValidationMessageFor(m => m.CoffeeCreationOptions.AddMilk)
+                        <button>Make Coffee</button>
+                    </div>
+                </form>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script>
+        exceptions = function (ex) {
+            if (ex.responseJSON.status == 500) {
+                alert(ex.responseJSON.detail);
+            }
+        };
+
+        success = function (msg) {
+            var confirmed = confirm(msg);
+            if (confirmed == true){
+                window.location.reload();
+            }
+        }
+
+        SetCoffeeActionsToMaking = function () {
+            $('#CoffeeActions')
+                .empty()
+                .append('@Html.Partial("_MakingCoffee")')
+        }
+    </script>
+}

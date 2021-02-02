@@ -1,0 +1,67 @@
+﻿@model NetwrixCoffee.ViewModels.CoffeeMachineUtilisationViewModel
+
+@{
+    ViewData["Title"] = "Utilisation";
+    var daysOfWeek = new List<string>();
+    for (var i = 0; i < 7; i++)
+    {
+        daysOfWeek.Add(((DayOfWeek)i).ToString());
+    }
+}
+
+    <div class="text-center">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Day</th>
+                    @foreach (var day in daysOfWeek)
+                    {
+                        <th scope="col">@day</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Average Coffees For Day</td>
+                    @foreach (var averageCoffee in Model.AverageCoffeePerDay)
+                    {
+                        <td>@averageCoffee</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Earliest For Day</td>
+                    @foreach (var earlistCoffee in Model.EarliestCoffeePerDay)
+                    {
+                        <td>@earlistCoffee</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Latest For Day</td>
+                    @foreach (var latestCoffee in Model.LatestCoffeePerDay)
+                    {
+                        <td>@latestCoffee</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Hour</th>
+                    @for (var i = 0; i < 24; i++)
+                    {
+                        <th scope="col">@TimeSpan.FromHours(i).ToString(@"hh\:mm")-@TimeSpan.FromHours(i).Add(TimeSpan.FromMinutes(59)).ToString(@"hh\:mm")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Average Coffees</td>
+                    @foreach (var averageCoffee in Model.AverageCoffeePerHour)
+                    {
+                        <td>@averageCoffee</td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
