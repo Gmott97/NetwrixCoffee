@@ -23,7 +23,7 @@ namespace NetwrixCoffee
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred while seeding the database.");
+                    logger.LogError(ex, "An error occurred while getting the database.");
                 }
             }
             host.Run();

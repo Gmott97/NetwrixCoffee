@@ -67,7 +67,7 @@ namespace NetwrixCoffee.API
             {
                 await _coffeeMachine.MakeCoffeeAsync(vm);
 
-                //await _coffeeMachineRecordService.AddCoffeeRecord(vm);
+                await _coffeeMachineRecordService.AddCoffeeRecord(vm);
 
                 return Ok("Coffee Made");
             }
