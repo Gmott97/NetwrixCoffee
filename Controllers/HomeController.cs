@@ -44,13 +44,13 @@ namespace NetwrixCoffee.Controllers
 
         [HttpPost]
         public async Task<IActionResult> MakeCoffee(
-            CoffeeCreationOptions vm)
+            CoffeeMachineIndexViewModel vm)
         {
             try
             {
-                await _coffeeMachine.MakeCoffeeAsync(vm);
+                await _coffeeMachine.MakeCoffeeAsync(vm.CoffeeCreationOptions);
 
-                //await _coffeeMachineRecordService.AddCoffeeRecord(vm.CoffeeCreationOptions);
+                await _coffeeMachineRecordService.AddCoffeeRecord(vm.CoffeeCreationOptions);
 
                 return Json("Coffee Made");
             }

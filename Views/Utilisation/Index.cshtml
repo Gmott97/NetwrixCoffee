@@ -22,21 +22,21 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Average Coffees For Day</td>
+                    <td>@Html.LabelFor(m => m.AverageCoffeePerDay)</td>
                     @foreach (var averageCoffee in Model.AverageCoffeePerDay)
                     {
                         <td>@averageCoffee</td>
                     }
                 </tr>
                 <tr>
-                    <td>Earliest For Day</td>
+                    <td>@Html.LabelFor(m => m.EarliestCoffeePerDay)</td>
                     @foreach (var earlistCoffee in Model.EarliestCoffeePerDay)
                     {
                         <td>@earlistCoffee</td>
                     }
                 </tr>
                 <tr>
-                    <td>Latest For Day</td>
+                    <td>@Html.LabelFor(m => m.LatestCoffeePerDay)</td>
                     @foreach (var latestCoffee in Model.LatestCoffeePerDay)
                     {
                         <td>@latestCoffee</td>
@@ -56,7 +56,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Average Coffees</td>
+                    <td>@Html.LabelFor(m => m.AverageCoffeePerHour)</td>
                     @foreach (var averageCoffee in Model.AverageCoffeePerHour)
                     {
                         <td>@averageCoffee</td>
