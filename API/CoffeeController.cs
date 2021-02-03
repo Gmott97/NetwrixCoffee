@@ -3,6 +3,8 @@ using NetwrixCoffee.DAL.Services;
 using NetwrixCoffee.Models;
 using NetwrixCoffee.Models.Enums;
 using NetwrixCoffee.Services.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace NetwrixCoffee.API
 {
@@ -23,9 +25,29 @@ namespace NetwrixCoffee.API
         }
 
 
-        [HttpGet("On")]
-        public ActionResult<bool> GetOn()
+        [HttpGet("IsOn")]
+        public ActionResult<bool> GetIsOn()
         {
+            return _coffeeMachine.IsOn;
+        }
+
+
+        [HttpPost("Power")]
+        public async Task<ActionResult<bool>> PostPowerAsync(
+            [FromBody] Power power)
+        {
+            if (power.IsOn == _coffeeMachine.IsOn)
+            {
+                return power.IsOn;
+            }
+            else if (power.IsOn)
+            {
+                await _coffeeMachine.TurnOnAsync();
+            }
+            else
+            {
+                await _coffeeMachine.TurnOffAsync();
+            }
             return _coffeeMachine.IsOn;
         }
 
@@ -34,6 +56,25 @@ namespace NetwrixCoffee.API
         public ActionResult<bool> GetMakingCoffee()
         {
             return _coffeeMachine.IsMakingCoffee;
+        }
+
+
+        [HttpPost("MakingCoffee")]
+        public async Task<IActionResult> PostMakingCoffeeAsync(
+            [FromBody] CoffeeCreationOptions vm)
+        {
+            try
+            {
+                await _coffeeMachine.MakeCoffeeAsync(vm);
+
+                await _coffeeMachineRecordService.AddCoffeeRecord(vm);
+
+                return Ok("Coffee Made");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Problem(ex.Message, statusCode: 500);
+            }
         }
 
 

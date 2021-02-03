@@ -5,7 +5,12 @@
 }
 
 <div class="text-center">
-    <form method="post" data-ajax="true" data-ajax-method="post" data-ajax-url="/Home/FlipMachineSwitch" data-ajax-failure="exceptions" data-ajax-success="success">
+    <form method="post"
+          data-ajax="true"
+          data-ajax-method="post"
+          data-ajax-url="/Home/FlipMachineSwitch"
+          data-ajax-failure="exceptions"
+          data-ajax-success="success">
         @if (Model.CoffeeStatus.IsOn)
         {
             <div>Its on</div>
@@ -56,17 +61,18 @@
                       data-ajax-failure="exceptions"
                       data-ajax-success="success"
                       data-ajax-begin="SetCoffeeActionsToMaking">
-                    <div class="col-3">
+                    <div class="form-group">
                         @Html.LabelFor(m => m.CoffeeCreationOptions.NumEspressoShots)
-                        @Html.EditorFor(m => m.CoffeeCreationOptions.NumEspressoShots, new { htmlAttributes = new {@required = "required", @min = 1 } })
+                        @Html.EditorFor(m => m.CoffeeCreationOptions.NumEspressoShots,
+                            new { htmlAttributes = new { @required = "required", @min = 1 } })
                         @Html.ValidationMessageFor(m => m.CoffeeCreationOptions.NumEspressoShots)
                     </div>
-                    <div class="col-3">
-                        @Html.LabelFor(m => m.CoffeeCreationOptions.AddMilk)
+                    <div class="form-group form-check">
                         @Html.EditorFor(m => m.CoffeeCreationOptions.AddMilk)
+                        @Html.LabelFor(m => m.CoffeeCreationOptions.AddMilk)
                         @Html.ValidationMessageFor(m => m.CoffeeCreationOptions.AddMilk)
-                        <button>Make Coffee</button>
                     </div>
+                    <button>Make Coffee</button>
                 </form>
             }
         </div>

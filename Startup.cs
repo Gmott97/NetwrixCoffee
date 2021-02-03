@@ -26,7 +26,7 @@ namespace NetwrixCoffee
             services.AddControllersWithViews();
             services.AddSingleton<ICoffeeMachine, CoffeeMachine>();
             services.AddTransient<ICoffeeMachineRecordService, CoffeeMachineRecordService>();
-
+            //services.AddSingleton<ICoffeeMachineRecordService, CoffeeMachineRecordMockService>();
             services.AddDbContext<CoffeeMachineContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

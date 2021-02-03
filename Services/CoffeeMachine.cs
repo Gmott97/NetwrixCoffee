@@ -66,9 +66,21 @@ namespace NetwrixCoffee.Services
         public async Task MakeCoffeeAsync(
             CoffeeCreationOptions options)
         {
-            if (!IsOn || IsMakingCoffee || GetAlertState())
+            if (!IsOn)
             {
-                throw new InvalidOperationException("Invalid state");
+                throw new InvalidOperationException("Machine is off");
+            }
+            if (IsMakingCoffee)
+            {
+                throw new InvalidOperationException("Machine is making coffee");
+            }
+            if (GetAlertState())
+            {
+                throw new InvalidOperationException("Machine is in Alert State");
+            }
+            if (options.NumEspressoShots < 1)
+            {
+                throw new InvalidOperationException("Machine needs at least 1 espresso shot");
             }
             IsMakingCoffee = true;
 
